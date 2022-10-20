@@ -27,6 +27,7 @@ public class Employee_payroll {
 			retriveData();
 			updateData();
 			updatedataPreparedstatement();
+			retriveDataPreparedStatements();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -65,7 +66,7 @@ public class Employee_payroll {
 			Statement statement = connection.createStatement();
 			String query = "update employee_payroll set SALARY=450000 where NAME='Varun'";
 			Integer Updated = statement.executeUpdate(query);
-			System.out.println("\nUpdated: " + Updated);
+			System.out.println("\nUPDATED: " + Updated);
 			retriveData();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -85,5 +86,27 @@ public class Employee_payroll {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+	}
+
+	// RETRIVING DATA FROM THE DATABASE(PREPARED STATEMENTS):
+	private static void retriveDataPreparedStatements() {
+		try {
+			PreparedStatement preparedStatement = connection
+					.prepareStatement("select * from employee_payroll where NAME=?");
+			preparedStatement.setString(1, "Varun");
+			ResultSet result = preparedStatement.executeQuery();
+			System.out.println("\n");
+			while (result.next()) {
+				System.out.print("ID:" + result.getInt("ID") + "	");
+				System.out.print("NAME:" + result.getString("NAME") + "     ");
+				System.out.print("SALARY:" + result.getString("SALARY") + "     ");
+				System.out.print("STARTDATE:" + result.getString("STARTDATE") + "     ");
+				System.out.print("GENDER:" + result.getString("GENDER") + "\n");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 }
