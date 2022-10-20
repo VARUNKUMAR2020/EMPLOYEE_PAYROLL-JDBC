@@ -24,9 +24,9 @@ public class Employee_payroll {
 		try {
 			System.out.println("Connecting to database:" + jdbcURL);
 			connection = DriverManager.getConnection(jdbcURL, UserName, password);
-			retriveData();//
+			retriveData();
 			updateData();
-			System.out.println("Connection is successful!: " + connection);
+			updatedataPreparedstatement();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -47,7 +47,6 @@ public class Employee_payroll {
 		try {
 			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery("select * from employee_payroll");
-			System.out.println("\n" + result + " records retrieved.");
 			while (result.next()) {
 				System.out.print("ID:" + result.getInt("ID") + "	");
 				System.out.print("NAME:" + result.getString("NAME") + "     ");
@@ -60,18 +59,31 @@ public class Employee_payroll {
 		}
 	}
 
-
-	//UPDATE THE DATA IN DATABASE:
+	// UPDATE THE DATA IN DATABASE:
 	private static void updateData() {
 		try {
 			Statement statement = connection.createStatement();
 			String query = "update employee_payroll set SALARY=450000 where NAME='Varun'";
-            Integer Updated = statement.executeUpdate(query);
+			Integer Updated = statement.executeUpdate(query);
 			System.out.println("\nUpdated: " + Updated);
 			retriveData();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
+	// UPDATE THE DATA IN DATABASE USING PREPARED STATEMENTS:
+	private static void updatedataPreparedstatement() {
+		try {
+			PreparedStatement preparedStatement = connection
+					.prepareStatement("update employee_payroll set SALARY=? where NAME=? ");
+			preparedStatement.setLong(1, 60000);
+			preparedStatement.setString(2, "Varun");
+			Integer Updated = preparedStatement.executeUpdate();
+			System.out.println("\nUPDATED: " + Updated);
+			retriveData();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }
-		
