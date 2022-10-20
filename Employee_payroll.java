@@ -1,4 +1,5 @@
 package Employee_payroll.jdbc;
+
 import java.sql.*;
 import java.util.*;
 
@@ -24,6 +25,7 @@ public class Employee_payroll {
 			System.out.println("Connecting to database:" + jdbcURL);
 			connection = DriverManager.getConnection(jdbcURL, UserName, password);
 			retriveData();//
+			updateData();
 			System.out.println("Connection is successful!: " + connection);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -39,9 +41,8 @@ public class Employee_payroll {
 		}
 
 	}
-    
 
-	//RETRIVING DATA FROM THE DATABASE:
+	// RETRIVING DATA FROM THE DATABASE:
 	private static void retriveData() {
 		try {
 			Statement statement = connection.createStatement();
@@ -58,4 +59,19 @@ public class Employee_payroll {
 			e.printStackTrace();
 		}
 	}
+
+
+	//UPDATE THE DATA IN DATABASE:
+	private static void updateData() {
+		try {
+			Statement statement = connection.createStatement();
+			String query = "update employee_payroll set SALARY=450000 where NAME='Varun'";
+            Integer Updated = statement.executeUpdate(query);
+			System.out.println("\nUpdated: " + Updated);
+			retriveData();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
+		
