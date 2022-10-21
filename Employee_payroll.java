@@ -28,6 +28,7 @@ public class Employee_payroll {
 			updateData();
 			updatedataPreparedstatement();
 			retriveDataPreparedStatements();
+			retriveDataRange();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -48,6 +49,7 @@ public class Employee_payroll {
 		try {
 			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery("select * from employee_payroll");
+			System.out.println("\nDATA RETRIVED FROM THE DATABASE: ");
 			while (result.next()) {
 				System.out.print("ID:" + result.getInt("ID") + "	");
 				System.out.print("NAME:" + result.getString("NAME") + "     ");
@@ -66,7 +68,7 @@ public class Employee_payroll {
 			Statement statement = connection.createStatement();
 			String query = "update employee_payroll set SALARY=450000 where NAME='Varun'";
 			Integer Updated = statement.executeUpdate(query);
-			System.out.println("\nUPDATED: " + Updated);
+			System.out.println("\nUPDATED THE SALARY: " + Updated);
 			retriveData();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -81,7 +83,7 @@ public class Employee_payroll {
 			preparedStatement.setLong(1, 60000);
 			preparedStatement.setString(2, "Varun");
 			Integer Updated = preparedStatement.executeUpdate();
-			System.out.println("\nUPDATED: " + Updated);
+			System.out.println("\nUPDATED USING PREPARED STATEMENTS: " + Updated);
 			retriveData();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -96,7 +98,7 @@ public class Employee_payroll {
 					.prepareStatement("select * from employee_payroll where NAME=?");
 			preparedStatement.setString(1, "Varun");
 			ResultSet result = preparedStatement.executeQuery();
-			System.out.println("\n");
+			System.out.println("\nDATA RECEIVED: ");
 			while (result.next()) {
 				System.out.print("ID:" + result.getInt("ID") + "	");
 				System.out.print("NAME:" + result.getString("NAME") + "     ");
@@ -107,6 +109,24 @@ public class Employee_payroll {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
 
+	// RETRIVE DATA FROM DATABASE USING RANGE:
+	private static void retriveDataRange() {
+		try {
+			Statement statement = connection.createStatement();
+			String query = "Select * from employee_payroll where STARTDATE between '2017-05-21' and DATE(now())";
+			ResultSet result = statement.executeQuery(query);
+			System.out.println("\nDATA FROM THE GIVEN RANGE: ");
+			while (result.next()) {
+				System.out.print("ID:" + result.getInt("ID") + "	");
+				System.out.print("NAME:" + result.getString("NAME") + "     ");
+				System.out.print("SALARY:" + result.getString("SALARY") + "     ");
+				System.out.print("STARTDATE:" + result.getString("STARTDATE") + "     ");
+				System.out.print("GENDER:" + result.getString("GENDER") + "\n");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
